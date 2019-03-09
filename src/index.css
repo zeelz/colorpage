@@ -1,6 +1,8 @@
 body {
+  height: 100vh;
   margin: 0;
   padding: 20px;
+  background-color: #f7f7f7!important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -9,6 +11,10 @@ body {
 
   transition: background-color 500ms cubic-bezier(0.95, 0.05, 0.795, 0.035);
 
+}
+
+.App {
+  margin-top: 20vh;
 }
 
 code {
@@ -24,13 +30,14 @@ code {
 }
 
 .title {
-  text-shadow: 0px 2px 4px #e8e8e8;
-  color: #565656bf;
+  color: #ffffffbf;
 }
 
 .btn.random {
   color:  #fff;
   background-color: #673ab7c7;
+  font-size: 1em;
+  padding: 0.75em 2em;
 }
 .btn.random:hover {
   color:  #fff;

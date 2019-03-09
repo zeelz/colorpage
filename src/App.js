@@ -13,9 +13,7 @@ class App extends Component {
     this.state = {
       colorButtons: [
         {id: 1, bText: "Reddy", color: "danger"},
-        {id: 2, bText: "Bluey", color: "primary"},
-        {id: 3, bText: "Greeny", color: "success"},
-        {id: 4, bText: "Grey", color: "secondary"}
+        {id: 2, bText: "Bluey", color: "primary"}
       ],
       title: "Color the Page"
     }
@@ -23,29 +21,43 @@ class App extends Component {
   bodyEl = document.getElementsByTagName('body')[0];
 
   handleColorPage = (e) => {
-    this.bodyEl.classList.remove("bg-danger", "bg-primary", "bg-success", "bg-secondary");
     this.bodyEl.classList.add("bg-" +e.target.dataset.color);
   };
 
-  clearBg = (e) => {
-    this.bodyEl.classList.remove("bg-danger", "bg-primary", "bg-success", "bg-secondary");
+  intervalHandle;
+
+  clearBg = () => {
     this.bodyEl.setAttribute('style', '');
+    if (this.intervalHandle) {      
+        clearInterval(this.intervalHandle);
+    }
   };
+  wrapped = n => n>255 ? n-255 : n;
+  initialColor = new Array();
 
-  addRandomColor = () => {
-    this.clearBg();
-    this.bodyEl.style.backgroundColor = "rgb(" +Math.round(Math.random() *255)+ " " +Math.round(Math.random() *255)+ " " +Math.round(Math.random() *255)+ ")";
-  };
+  randomizeColor = () => {
+    this.bodyEl.setAttribute('style', '');
+    let firstStop = 100;
+    let secondStop = 100;
+    this.initialColor = [];
+    this.initialColor.push(Math.round(Math.random() *255), Math.round(Math.random() *255), Math.round(Math.random() *255));
 
-  ColorButtonC = (v,i) => <ColorButton key={v.id} colorData={v.color} btnClasses={"btn btn-" +v.color+ " m-1"} doColorPage={ this.handleColorPage } bText={v.bText} />;
+    this.intervalHandle = setInterval(() => {
+      this.bodyEl.style.backgroundImage = "conic-gradient(rgb("+this.initialColor[0]+","+this.initialColor[1]+","+this.initialColor[2]+")" +firstStop+ "%, rgb(" +this.wrapped(this.initialColor[0]+168)+ ","+this.wrapped(this.initialColor[1]+36)+","+this.wrapped(this.initialColor[2]+198)+")" +secondStop+ "%)";
+      firstStop--;
 
+      if(firstStop <= 0){
+        clearInterval(this.intervalHandle);
+      }
+    }, 100);    
+  }
+  
   render() {
     return (
 
-      <div className="App mt-5">     
+      <div className="App">     
         <h1 className="display-3 m-4 title">{ this.state.title }</h1>
-        { this.state.colorButtons.map(this.ColorButtonC) }
-        <button className="btn random" onClick={ this.addRandomColor }>Random</button>
+        <button className="btn random" onClick={ this.randomizeColor }>Randomize Color</button>
         <button ref="someRef" className="btn"><span className="text-muted oi oi-ban" title="ban" aria-hidden="true" onClick={ this.clearBg }></span></button>
         
       </div>
